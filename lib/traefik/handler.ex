@@ -45,31 +45,31 @@ defmodule Traefik.Handler do
     %{ conn | status: 404, response: "'#{path}' not found!!!🤕"}
   end
 
-    def format_response(conn) do
-      """
-      HTTP/1.1 #{conn.status} #{status_reason(conn.status)}
-      Host: some.com
-      User-Agent: telnet
-      Content-Length: #{String.length(conn.response)}
-      Accept: */*
+  def format_response(conn) do
+    """
+    HTTP/1.1 #{conn.status} #{status_reason(conn.status)}
+    Host: some.com
+    User-Agent: telnet
+    Content-Length: #{String.length(conn.response)}
+    Accept: */*
 
-      #{conn.response}
-      """
+    #{conn.response}
+    """
+  end
+
+  defp status_reason(code) do
+    %{
+      200 => "OK",
+      201 => "Created",
+      301 => "Moved Permanently",
+      303 => "See Other",
+      400 => "Bad Request",
+      403 => "Forbidden",
+      404 => "Not Found",
+      500 => "Internal Server Error"
+    }[code]
+    # |> MAP.get(code)
     end
-
-    defp status_reason(code) do
-      %{
-        200 => "OK",
-        201 => "Created",
-        301 => "Moved Permanently",
-        303 => "See Other",
-        400 => "Bad Request",
-        403 => "Forbidden",
-        404 => "Not Found",
-        500 => "Internal Server Error"
-      }[code]
-      # |> MAP.get(code)
-      end
 end
 
 request_1 = """
