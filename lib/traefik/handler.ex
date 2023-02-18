@@ -6,7 +6,7 @@ defmodule Traefik.Handler do
     |> format_response()
   end
 
-  def parse(request) do
+  def parse(_request) do
     %{
       method: "GET",
       path: "/hello",
@@ -14,7 +14,7 @@ defmodule Traefik.Handler do
     }
   end
 
-  def route(conn) do
+  def route(_conn) do
     %{
       method: "GET",
       path: "/hello",
@@ -22,7 +22,7 @@ defmodule Traefik.Handler do
     }
   end
 
-    def format_response(conn) do
+    def format_response(_conn) do
       """
       HTTP/1.1 200 OK
       Host: some.com
@@ -43,4 +43,4 @@ User-Agent: telnet
 
 """
 
-IO.puts( request )
+IO.puts( Traefik.Handler.handle(request) )
