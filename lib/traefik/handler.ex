@@ -2,6 +2,7 @@ defmodule Traefik.Handler do
   def handle(request) do
     request
     |> parse()
+    |> rewrite_path()
     |> log()
     |> route()
     |> format_response()
@@ -16,6 +17,12 @@ defmodule Traefik.Handler do
     %{ method: method, path: path, response: "" , status: nil}
   end
 
+  def rewrite_path( %{path: "/redirectme" } = conn ) do
+    %{ conn | path: "/all" }
+  end
+
+  def rewrite_path( conn ), do: conn
+
   def log(conn), do: IO.inspect( conn, label: "Logger" ) 
 
   def route(conn) do
@@ -28,6 +35,10 @@ defmodule Traefik.Handler do
 
   def route(conn, "GET", "/world") do
     %{ conn | status: 200, response: "Hello world!🌹" }
+  end
+
+  def route(conn, "GET", "/all") do
+    %{conn | status: 200, response: "All developers greetings!:👋"}
   end
 
   def route(conn, _method, path) do
@@ -88,8 +99,19 @@ User-Agent: telnet
 
 """
 
+request_4 = """
+GET /redirectme HTTP/1.1
+Accept: */*
+Connection: keep-alive
+User-Agent: telnet
+
+
+"""
+
 IO.puts( Traefik.Handler.handle( request_1 ) )
 IO.puts( "--------------------" )
 IO.puts( Traefik.Handler.handle( request_2 ) )
 IO.puts( "--------------------" )
 IO.puts( Traefik.Handler.handle( request_3 ) )
+IO.puts( "--------------------" )
+IO.puts( Traefik.Handler.handle( request_4 ) )
