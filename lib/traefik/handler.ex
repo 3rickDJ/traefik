@@ -19,22 +19,22 @@ defmodule Traefik.Handler do
     }
   end
 
-  def route(_conn) do
-    %{
-      method: "GET",
-      path: "/hello",
-      response: "Hello world"
+  def route(conn) do
+    %{ 
+      conn | 
+      response: "Hello world!😘"
     }
   end
 
-    def format_response(_conn) do
+    def format_response(conn) do
       """
       HTTP/1.1 200 OK
       Host: some.com
       User-Agent: telnet
+      Content-Length: #{String.length(conn.response)}
       Accept: */*
 
-      Hello world
+      #{conn.response}
       """
     end
 end
