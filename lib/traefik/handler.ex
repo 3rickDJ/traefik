@@ -42,6 +42,16 @@ defmodule Traefik.Handler do
     %{conn | status: 200, response: "All developers greetings!:👋"}
   end
 
+  def route(conn, "GET", "/about") do
+    file = Path.expand("../../pages/", __DIR__) |> Path.join("about.html")
+    case File.read(file) do
+      {:ok, content} ->
+        %{ conn | status: 200, response: content }
+      {:error, reason} ->
+        %{ conn | status: 404, response: "File not found for: #{IO.inspect(reason)}" }
+    end
+  end
+
   def route(conn, _method, path) do
     %{ conn | status: 404, response: "'#{path}' not found!!!🤕"}
   end
@@ -116,6 +126,15 @@ User-Agent: telnet
 
 """
 
+request_5 = """
+GET /about HTTP/1.1
+Accept: */*
+Connection: keep-alive
+User-Agent: telnet
+
+
+"""
+
 IO.puts( Traefik.Handler.handle( request_1 ) )
 IO.puts( "--------------------" )
 IO.puts( Traefik.Handler.handle( request_2 ) )
@@ -123,3 +142,5 @@ IO.puts( "--------------------" )
 IO.puts( Traefik.Handler.handle( request_3 ) )
 IO.puts( "--------------------" )
 IO.puts( Traefik.Handler.handle( request_4 ) )
+IO.puts( "--------------------" )
+IO.puts( Traefik.Handler.handle( request_5 ) )
