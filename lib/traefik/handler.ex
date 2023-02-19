@@ -43,8 +43,9 @@ defmodule Traefik.Handler do
   end
 
   def route(conn, "GET", "/about") do
-    file = Path.expand("../../pages/", __DIR__) |> Path.join("about.html")
-    case File.read(file) do
+    Path.expand("../../pages/about.html", __DIR__)
+    |> File.read()
+    |> case do
       {:ok, content} ->
         %{ conn | status: 200, response: content }
       {:error, reason} ->
