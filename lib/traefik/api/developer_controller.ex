@@ -5,6 +5,6 @@ defmodule Traefik.Api.DeveloperController do
     json =
       Traefik.Organization.list_developers(%{limit: 10, offset: 0})
       |> Jason.encode!()
-    %{conn | status: 200, response: json, content_type: "appplication/json"}
+    %{conn | status: 200, response: json, content_type: "application/json"}
   end
 end
