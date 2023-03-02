@@ -7,10 +7,10 @@ defmodule Traefik.Plugs do
 
   def rewrite_path( %Conn{} = conn ), do: conn
 
-  def log(%Conn{} = conn), do: IO.inspect( conn, label: "Logger" ) 
+  def log(%Conn{} = conn), do: conn
 
-  def track( %Conn{ status: 404, path: path } = conn ) do
-    IO.inspect("Warn:✊ path #{path} not found", label: "Tracker")
+  def track( %Conn{ status: 404, path: _path } = conn ) do
+    # IO.inspect("Warn:✊ path #{path} not found", label: "Tracker")
     conn
   end
 
