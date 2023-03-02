@@ -18,11 +18,11 @@ defmodule Traefik.Handler do
   end
 
   def route(%Conn{ method: "GET", path: "/hello" } = conn ) do
-    %{ conn | status: 200, response: "Hello mellow!😘" }
+    %{ conn | status: 200, response: "Hello World!!!" }
   end
 
   def route(%Conn{method: "GET", path: "/world"} = conn ) do
-    %{ conn | status: 200, response: "Hello world!🌹" }
+    %{ conn | status: 200, response: "Hello MakingDevs and all devs" }
   end
 
   def route(%Conn{method: "GET", path: "/developer"} = conn ) do
@@ -48,7 +48,7 @@ defmodule Traefik.Handler do
   end
 
   def route(%Conn{method: _method, path: path} = conn ) do
-    %{ conn | status: 404, response: "'#{path}' not found!!!🤕"}
+    %{ conn | status: 404, response: "No #{path} found!!!"}
   end
 
   def handle_file( {:ok, content}, %Conn{} = conn ),
@@ -62,7 +62,7 @@ defmodule Traefik.Handler do
     HTTP/1.1 #{Conn.status(conn)}
     Host: some.com
     User-Agent: telnet
-    Content-Length: #{String.length(conn.response)}
+    Content-Lenght: #{String.length(conn.response)}
     Accept: */*
 
     #{conn.response}
