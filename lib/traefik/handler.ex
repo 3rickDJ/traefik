@@ -5,6 +5,7 @@ defmodule Traefik.Handler do
   import Traefik.Plugs, only: [rewrite_path: 1, log: 1, track: 1]
   import Traefik.Parser, only: [parse: 1]
   alias Traefik.Conn, as: Conn
+  alias Traefil.DeveloperController
 
   def handle(request) do
     request
@@ -24,8 +25,12 @@ defmodule Traefik.Handler do
     %{ conn | status: 200, response: "Hello world!🌹" }
   end
 
-  def route(%Conn{method: "GET", path: "/all"} = conn ) do
-    %{conn | status: 200, response: "All developers greetings!:👋"}
+  def route(%Conn{method: "GET", path: "/developer"} = conn ) do
+    DeveloperController.index(conn)
+  end
+
+  def route(%Conn{method: "GET", path: "/developer/" <> id } = conn ) do
+    DeveloperController.show(conn, %{"id" => id})
   end
 
   def route(%Conn{method: "POST", path: "/new", params: params} = conn ) do
@@ -121,6 +126,25 @@ User-Agent: telnet
 name=Erick&company=MakingDevs
 """
 
+
+request_7 = """
+GET /developer HTTP/1.1
+Accept: */*
+Connection: keep-alive
+Content-Type: application/x-www-form-urlencoded
+User-Agent: telnet
+
+"""
+
+request_8 = """
+GET /developer/17 HTTP/1.1
+Accept: */*
+Connection: keep-alive
+Content-Type: application/x-www-form-urlencoded
+User-Agent: telnet
+
+"""
+
 IO.puts( Traefik.Handler.handle( request_1 ) )
 IO.puts( "--------------------" )
 IO.puts( Traefik.Handler.handle( request_2 ) )
@@ -132,3 +156,7 @@ IO.puts( "--------------------" )
 IO.puts( Traefik.Handler.handle( request_5 ) )
 IO.puts( "--------------------" )
 IO.puts( Traefik.Handler.handle( request_6 ) )
+IO.puts( "--------------------" )
+IO.puts( Traefik.Handler.handle( request_7 ) )
+IO.puts( "--------------------" )
+IO.puts( Traefik.Handler.handle( request_8 ) )
