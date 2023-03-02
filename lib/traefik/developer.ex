@@ -1,4 +1,5 @@
 defmodule Traefik.Developer do
+  @derive Jason.Encoder
   defstruct(
     id: 0,
     first_name: "",
