@@ -5,7 +5,7 @@ defmodule Traefik.Handler do
   import Traefik.Plugs, only: [rewrite_path: 1, log: 1, track: 1]
   import Traefik.Parser, only: [parse: 1]
   alias Traefik.Conn, as: Conn
-  alias Traefil.DeveloperController
+  alias Traefik.DeveloperController
 
   def handle(request) do
     request
