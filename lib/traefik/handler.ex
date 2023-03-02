@@ -11,7 +11,7 @@ defmodule Traefik.Handler do
     request
     |> parse()
     |> rewrite_path()
-    |> log()
+    # |> log()
     |> route()
     |> track()
     |> format_response()
