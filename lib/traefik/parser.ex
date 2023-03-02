@@ -2,7 +2,7 @@ defmodule Traefik.Parser do
   alias Traefik.Conn
 
   @doc """
-  Parses a request and transforms into a Traefil.Conn struct
+  Parses a request and transforms into a Traefik.Conn struct
   """
   def parse(request) do
     [main, params_string] = String.split(request, "\r\n\r\n")
