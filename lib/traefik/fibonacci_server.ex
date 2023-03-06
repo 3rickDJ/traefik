@@ -26,4 +26,15 @@ defmodule Traefik.FibonacciServer do
 
     {:ok, result, new_state}
   end
+
+  def handle_call({:compute, n}, state) do
+    result =
+      case Map.get(state, n) do
+        nil -> Fibonacci.sequence(n)
+        r -> r
+      end
+
+    new_state = Map.put_new(state, n, result)
+    {:ok, result, new_state}
+  end
 end
