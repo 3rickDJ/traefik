@@ -5,7 +5,7 @@ defmodule Traefik.Handler do
   import Traefik.Plugs, only: [rewrite_path: 1, log: 1, track: 1]
   import Traefik.Parser, only: [parse: 1]
   alias Traefik.Conn, as: Conn
-  alias Traefik.DeveloperController
+  alias Traefik.{DeveloperController, FibonacciController }
 
   def handle(request) do
     request
@@ -19,6 +19,10 @@ defmodule Traefik.Handler do
 
   def route(%Conn{method: "GET", path: "/crash"} = _conn ) do
     raise "Crash server!!!"
+  end
+
+  def route(%Conn{method: "POST", path: "/fibonacci", params: params} = conn ) do
+    FibonacciController.compute(conn, params)
   end
 
   def route(%Conn{method: "GET", path: "/freeze/"  <> freeze} = conn ) do
