@@ -55,8 +55,9 @@ defmodule Traefik.PoolQueue do
   def handle_cast({:add_remote, node}, %{queue: queue, worker: {mod, fun, args} = worker}) do
     {:ok, pid} = :rpc.call(node, mod, fun, [args])
     IO.inspect(pid, label: "remote")
-    ref = :erlang.monitor(:process, pid)
-    {:noreply, %{queue: queue ++ [%{ref: ref, pid: pid}], worker: worker}}
+    ref = Process.monitor(pid)
+    IO.inspect(ref, label: "ref")
+    {:noreply, %{queue: queue ++ [%{pid: pid, ref: ref}], worker: worker}}
   end
 
   def handle_info({:DOWN, _ref, :process, pid, reason}, %{queue: queue, worker: {mod, fun, args}}) do
